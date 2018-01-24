@@ -1,6 +1,6 @@
 const nodeExcel = require("excel-export");
 const debug = require("debug")("trunk-export");
-const fs = require("fs");
+const fs = require("fs-extra");
 const stringify = require("csv-stringify");
 const iconv = require("iconv-lite");
 
@@ -10,12 +10,12 @@ class ExportHelper {
     this.ENV = ENV;
     this.EXPORT_CSV_PATH = CSV.slice(-1) === '/' ? CSV : `${CSV}/`;
     if (!fs.existsSync(this.EXPORT_CSV_PATH)) {
-      fs.mkdirSync(this.EXPORT_CSV_PATH);
+      fs.ensureDirSync(this.EXPORT_CSV_PATH);
     }
     
     this.EXPORT_EXCEL_PATH = EXCEL.slice(-1) === '/' ? EXCEL : `${EXCEL}/`;
     if (!fs.existsSync(this.EXPORT_EXCEL_PATH)) {
-      fs.mkdirSync(this.EXPORT_EXCEL_PATH);
+      fs.ensureDirSync(this.EXPORT_EXCEL_PATH);
     }
   }
 
