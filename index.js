@@ -9,7 +9,14 @@ class ExportHelper {
     console.log("config", { CSV, EXCEL });
     this.ENV = ENV;
     this.EXPORT_CSV_PATH = CSV.slice(-1) === '/' ? CSV : `${CSV}/`;
+    if (!fs.existsSync(this.EXPORT_CSV_PATH)) {
+      fs.mkdirSync(this.EXPORT_CSV_PATH);
+    }
+    
     this.EXPORT_EXCEL_PATH = EXCEL.slice(-1) === '/' ? EXCEL : `${EXCEL}/`;
+    if (!fs.existsSync(this.EXPORT_EXCEL_PATH)) {
+      fs.mkdirSync(this.EXPORT_EXCEL_PATH);
+    }
   }
 
   async excel({ fileName=new Date().toISOString().slice(0, 10), columns=[], data=[] } = {}) {
