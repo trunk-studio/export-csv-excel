@@ -40,6 +40,23 @@ test('export excel', async () => {
   });
 });
 
+test("export excel no save", async () => {
+  let result = await exportHelper.excel({
+    fileName: 'no_save',
+    columns: [
+      { caption: "字串", type: "string" },
+      { caption: "電話", type: "string" },
+      { caption: "身分證", type: "string" }
+    ],
+    data: [
+      ["王小明", "09000000001", "Y123456789"],
+      ["王小華", "09000000002", "Y2987654321"],
+    ],
+    save: false
+  });
+});
+
+
 
 test('export csv', async () => {
   let result = await exportHelper.csv({

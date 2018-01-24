@@ -19,7 +19,7 @@ class ExportHelper {
     }
   }
 
-  async excel({ fileName=new Date().toISOString().slice(0, 10), columns=[], data=[] } = {}) {
+  async excel({ fileName=new Date().toISOString().slice(0, 10), columns=[], data=[], save=true } = {}) {
     if (!this.EXPORT_EXCEL_PATH) throw Error('EXCEL not set');
 
     const excelResult = nodeExcel.execute({
@@ -29,12 +29,14 @@ class ExportHelper {
 
     fileName = fileName.indexOf('xlsx') < 0 ? `${fileName}.xlsx` : fileName;
     const filePath = `${this.EXPORT_EXCEL_PATH}${fileName}`;
-    await fs.writeFileSync(filePath, excelResult, 'binary');
+    if (save) {
+      await fs.writeFileSync(filePath, excelResult, 'binary');
+    }
     let dataBuffer = new Buffer(excelResult, "binary");
-    return { filePath, fileName, binary: dataBuffer};
+    return { ...save ? {filePath, fileName} : {}, binary: dataBuffer};
   }
 
-  async csv({ fileName=new Date().toISOString().slice(0, 10), columns=[], data=[] } = {}) {
+  async csv({ fileName=new Date().toISOString().slice(0, 10), columns=[], data=[], save=true } = {}) {
     if (!this.EXPORT_CSV_PATH) throw Error('CSV not set');
 
     let dataString = await new Promise((defer, reject) => {
@@ -65,8 +67,10 @@ class ExportHelper {
     dataBuffer = iconv.encode(dataBuffer, encoding);
     fileName = fileName.indexOf('csv') < 0 ? `${fileName}.csv` : fileName;
     const filePath = `${this.EXPORT_CSV_PATH}${fileName}`;
-    await fs.writeFileSync(filePath, dataBuffer);
-    return { filePath, fileName, binary: dataBuffer};
+    if (save) {
+      await fs.writeFileSync(filePath, dataBuffer);
+    }
+    return { ...save ? {filePath, fileName} : {}, binary: dataBuffer};
   }
 
 }
