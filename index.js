@@ -5,11 +5,11 @@ const stringify = require("csv-stringify");
 const iconv = require("iconv-lite");
 
 class ExportHelper {
-  constructor(config) {
-    console.log("config", config);
-    this.ENV = config.ENV;
-    this.EXPORT_CSV_PATH = config.CSV.slice(-1) === '/' ? config.CSV : `${config.CSV}/`;
-    this.EXPORT_EXCEL_PATH = config.EXCEL.slice(-1) === '/' ? config.EXCEL : `${config.EXCEL}/`;
+  constructor({ ENV='', CSV=__dirname, EXCEL=__dirname } = {}) {
+    console.log("config", { CSV, EXCEL });
+    this.ENV = ENV;
+    this.EXPORT_CSV_PATH = CSV.slice(-1) === '/' ? CSV : `${CSV}/`;
+    this.EXPORT_EXCEL_PATH = EXCEL.slice(-1) === '/' ? EXCEL : `${EXCEL}/`;
   }
 
   async excel({ fileName=new Date().toISOString().slice(0, 10), columns=[], data=[] } = {}) {

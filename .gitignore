@@ -2,3 +2,5 @@ node_modules
 config/test.js
 __test__/*.csv
 __test__/*.xlsx
+*.csv
+*.xlsx
