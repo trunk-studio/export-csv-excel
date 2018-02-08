@@ -55,6 +55,14 @@ await exportHelper.csv({
 });
 ```
 
+讀取 excel 資料
+
+```javascript
+await exportHelper.parse({
+  filePath: `/user/201800101.xlsx`,
+});
+```
+
 ```
 npm install trunk-export-csv-excel
 ```

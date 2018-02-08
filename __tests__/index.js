@@ -38,6 +38,14 @@ test('export excel', async () => {
       ['香港尖沙咀金马伦道48号中国保险大厦15楼B室', '09000000008', 'Y2987654321'],
     ]
   });
+  console.log(result);
+});
+
+test('parse excel', async () => {
+  let result = await exportHelper.parse({
+    filePath: `${EXCEL}/${new Date().toISOString().slice(0, 10)}.xlsx`,
+  });
+  console.log(result);
 });
 
 test("export excel no save", async () => {
@@ -55,7 +63,6 @@ test("export excel no save", async () => {
     save: false
   });
 });
-
 
 
 test('export csv', async () => {

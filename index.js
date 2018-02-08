@@ -3,9 +3,11 @@ const debug = require("debug")("trunk-export");
 const fs = require("fs-extra");
 const stringify = require("csv-stringify");
 const iconv = require("iconv-lite");
+const parseExcel = require('node-xlsx');
+
 
 class ExportHelper {
-  constructor({ ENV='', CSV=__dirname, EXCEL=__dirname } = {}) {
+  constructor({ ENV='', CSV=__dirname, EXCEL=__dirname, PARSE_EXCEL } = {}) {
     console.log("config", { CSV, EXCEL });
     this.ENV = ENV;
     this.EXPORT_CSV_PATH = CSV.slice(-1) === '/' ? CSV : `${CSV}/`;
@@ -17,6 +19,7 @@ class ExportHelper {
     if (!fs.existsSync(this.EXPORT_EXCEL_PATH)) {
       fs.ensureDirSync(this.EXPORT_EXCEL_PATH);
     }
+
   }
 
   async excel({ fileName=new Date().toISOString().slice(0, 10), columns=[], data=[], save=true } = {}) {
@@ -35,6 +38,14 @@ class ExportHelper {
     let dataBuffer = new Buffer(excelResult, "binary");
     return { ...save ? {filePath, fileName} : {}, binary: dataBuffer};
   }
+
+  async parse({ filePath, sheetIndex = 0, startIndex = 0 } = {}) {
+    if (!filePath) throw Error('filePath not set');
+    const buffer = fs.readFileSync(filePath);
+    let workSheets = parseExcel.parse(buffer);
+    workSheets = workSheets[sheetIndex].data;
+    return workSheets;
+  } 
 
   async csv({ fileName=new Date().toISOString().slice(0, 10), columns=[], data=[], save=true } = {}) {
     if (!this.EXPORT_CSV_PATH) throw Error('CSV not set');
