@@ -41,7 +41,7 @@ class ExportHelper {
 
   async parse({ filePath, sheetIndex = 0, startIndex = 0 } = {}) {
     if (!filePath) throw Error('filePath not set');
-    const buffer = fs.readFileSync(filePath);
+    const buffer = await fs.readFileSync(filePath);
     let workSheets = parseExcel.parse(buffer);
     workSheets = workSheets[sheetIndex].data;
     return workSheets;
